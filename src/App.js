@@ -1,25 +1,69 @@
-import logo from './logo.svg';
-import './App.css';
+// // App.js
+// import React from 'react';
+// import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+// import HomePage from './components/main';
+// import LoginPage from './LoginPage';
 
-function App() {
+// const App = () => {
+//   return (
+//     <Router>
+//       <Routes>
+//         <Route path="/" element={<HomePage />} />
+//         <Route path="/login" element={<LoginPage />} />
+//       </Routes>
+//     </Router>
+//   );
+// };
+
+// export default App;
+
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import AppRouter from './AppRouter';
+import { auth } from './firebase';
+
+const App = () => {
+  const [currentUser, setCurrentUser] = useState(null);
+  const [navigate, setNavigate] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setCurrentUser(user);
+      } else {
+        setCurrentUser(null);
+      }
+    });
+
+    return unsubscribe;
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await auth.signOut();
+      setCurrentUser(null);
+      navigate('/');
+    } catch (error) {
+      console.error('Error logging out:', error.message);
+    }
+  };
+  const handleLogin = async () => {
+    try {
+      // await auth.signOut();
+      // setCurrentUser(null);
+    if (!currentUser) 
+      navigate('/login');
+    } catch (error) {
+      console.error('Error logging out:', error.message);
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <AppRouter currentUser={currentUser} handleLogout={handleLogout} handleLogin={handleLogin} setNavigate={setNavigate} />
+    </Router>
   );
-}
+};
 
 export default App;
+

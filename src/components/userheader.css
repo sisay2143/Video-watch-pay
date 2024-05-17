@@ -1,0 +1,107 @@
+.user-header {
+  background-color: #333;
+  color: #fff;
+  padding: 20px 30px;
+}
+
+.navigation-links {
+  list-style-type: none;
+  margin: 0;
+  margin-left: 60px;
+  padding: 0;
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: center;
+}
+
+.navigation-links li {
+  margin-right: 0px;
+}
+
+.home-link {
+  text-decoration: none;
+  color: #fff;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  padding: 5px;
+  border: none;
+  border-radius: 5px;
+  margin-left: 100px;
+  margin-right: 300px;
+  width: 400px; /* Adjust width as needed */
+}
+
+.search-icon {
+  color: #fff;
+  cursor: pointer;
+}
+
+.upload-link,
+.create-user-link,
+.about-link {
+  text-decoration: none;
+  color: #fff;
+}
+
+.login-button,
+.logout-button {
+  background-color: transparent;
+  border: 1px solid #fff;
+  color: #fff;
+  padding: 5px 5px; /* Adjust padding as needed */
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 0px; /* Add margin-right to create space */
+  margin-left: 5px; /* Add margin-left to push buttons to the right */
+}
+
+.login-button:hover,
+.logout-button:hover {
+  background-color: #fff;
+  color: #333;
+}
+
+
+.logout-button {
+  background-color: transparent;
+  border: 1px solid #fff;
+  color: #fff;
+  /* padding: 5px 15px; Adjust padding as needed */
+  padding-right: 25px;
+  padding-left: 25px;
+  border-radius: 5px;
+  cursor: pointer;
+  /* margin-right: 10px; Add margin-right to create space */
+}
+
+.logout-button:hover {
+  background-color: #fff;
+  color: #333;
+}
+
+.login-button {
+  background-color: transparent;
+  border: 1px solid #fff;
+  color: #fff;
+  padding: 5px 15px; /* Adjust padding as needed */
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px; /* Add margin-right to create space */
+}
+
+.login-button:hover {
+  background-color: #fff;
+  color: #333;
+}
+
+
+.right-side {
+  margin-left: 10px;
+  padding-right: 120px;
+}

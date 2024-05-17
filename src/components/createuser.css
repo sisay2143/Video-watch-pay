@@ -1,0 +1,50 @@
+/* Styles for Create User component */
+
+.createUserContainer {
+    max-width: 400px;
+    margin: 0 auto;
+    border: 1px solid #ccc; /* Add border */
+    border-radius: 5px; /* Add border radius for rounded corners */
+    padding: 20px; /* Add padding for spacing */
+  }
+  
+  .createUserContainer h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .createUserContainer input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .createUserContainer button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .createUserContainer button:hover {
+    background-color: #0056b3;
+  }
+  
+  .createUserContainer p {
+    color: red;
+  }
+  
+
+  .createUserContainer select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .createUserContainer option {
+    padding: 10px;
+  }
+  
