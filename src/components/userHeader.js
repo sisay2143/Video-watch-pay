@@ -32,6 +32,17 @@ const UserHeader = ({ isLoggedIn, handleLogout }) => {
     navigate('/login');
   };
 
+  const handleUploadClick = () => {
+    // Construct the YouTube uploader URL
+    const youtubeUploaderUrl = 'https://www.youtube.com/upload';
+
+    // Navigate to the YouTube uploader page
+    window.open(youtubeUploaderUrl, '_blank');
+
+    // Optionally, you can redirect the user back to the home page or another route
+    navigate('/');
+  };
+
   return (
     <div className="user-header">
       <nav>
@@ -48,7 +59,7 @@ const UserHeader = ({ isLoggedIn, handleLogout }) => {
           {userRole === 'admin' && (
             <>
               <li>
-                <Link to="/upload" className="upload-link right-side">Upload Video</Link>
+                <Link to="/upload" className="upload-link right-side" onClick={handleUploadClick}>Upload Video</Link>
               </li>
               <li>
                 <Link to="/create-user" className="create-user-link right-side">Create User</Link>
