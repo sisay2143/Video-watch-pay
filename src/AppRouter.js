@@ -9,6 +9,7 @@ import UploadVideo from "./components/uploadVideo";
 import UserHeader from "./components/userHeader";
 import ForgotPassword from "./components/forgotPassword";
 import UploadPage from "./components/createuser";
+// import HomePage from "./components/Home";
 
 const AppRouter = ({ currentUser, handleLogout, setNavigate, handleLogin }) => {
   return (
