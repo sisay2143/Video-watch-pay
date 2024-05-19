@@ -5,10 +5,10 @@ import { getAuth } from 'firebase/auth';
 import './userheader.css';
 import { FaSearch } from 'react-icons/fa'; // Import the search icon
 
-const UserHeader = ({ isLoggedIn, handleLogout }) => {
+const UserHeader = ({ isLoggedIn, handleLogout, handleSearch }) => {
   const [userRole, setUserRole] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchActive, setSearchActive] = useState(false);
+  // const [searchQuery, setSearchQuery] = useState('');
+  // const [searchActive, setSearchActive] = useState(false);
   const navigate = useNavigate();
   const auth = getAuth();
   const firestore = getFirestore();
@@ -35,40 +35,28 @@ const UserHeader = ({ isLoggedIn, handleLogout }) => {
     navigate('/login');
   };
 
-  const handleUploadClick = () => {
-    // Construct the YouTube uploader URL
-    const youtubeUploaderUrl = 'https://www.youtube.com/upload';
+  // const handleUploadClick = () => {
+  //   // Construct the YouTube uploader URL
+  //   const youtubeUploaderUrl = 'https://www.youtube.com/upload';
 
-    // Navigate to the YouTube uploader page
-    window.open(youtubeUploaderUrl, '_blank');
+  //   // Navigate to the YouTube uploader page
+  //   window.open(youtubeUploaderUrl, '_blank');
 
-    // Optionally, you can redirect the user back to the home page or another route
-    navigate('/');
-  };
-
-  // const handleSearch = () => {
-  //   const matchingVideos = allVideos.filter((video) => {
-  //     const title = video.title.toLowerCase();
-  //     const query = searchQuery.toLowerCase();
-  //     return (
-  //       title.startsWith(query) ||
-  //       title.endsWith(query) ||
-  //       title.includes(query)
-  //     );
-  //   });
-
-  //   setFilteredVideos(matchingVideos);
+  //   // Optionally, you can redirect the user back to the home page or another route
+  //   navigate('/');
   // };
 
-  const handleSearchIconClick = () => {
-    // Enable the search input field
-    const searchInput = document.querySelector(".search-bar input");
-    searchInput.disabled = false;
-    searchInput.focus();
-    setSearchQuery('');
 
-    // Perform the search
-    // handleSearch();
+  const [searchQuery, setSearchQuery] = useState('');
+
+
+
+  const handleSearchIconClick = () => {
+    const searchInput = document.querySelector(".search-bar input");
+    if (searchInput) {
+      const searchQuery = searchInput.value;
+      setSearchQuery(searchQuery);
+    }
   };
 
   return (
@@ -79,19 +67,20 @@ const UserHeader = ({ isLoggedIn, handleLogout }) => {
             <Link to="/" className="home-link">Home</Link>
           </li>
           <li>
-          <div className="search-bar">
+          <div className="search-bar-header">
             <input
+            className='search-inputs search-container'
               type="text"
               placeholder="Search by title"
               value={searchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value);
-                // handleSearch();
+                handleSearch();
               }}
               disabled={false}
             />
             <FaSearch
-              className="search-icon"
+              className="sisay"
               onClick={handleSearchIconClick}
             />
           </div>
@@ -113,7 +102,7 @@ const UserHeader = ({ isLoggedIn, handleLogout }) => {
             {isLoggedIn ? (
               <button onClick={handleLogout} className="logout-button ">Logout</button>
             ) : (
-              <button onClick={handleLogin} className="login-button ">Login</button>
+              <button onClick={handleLogin} className="login-button">Login</button>
             )}
           </li>
         </ul>

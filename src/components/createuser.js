@@ -46,6 +46,12 @@ const CreateUser = () => {
       <div>
         <input
           type="text"
+          placeholder="Name"
+          value={displayName}
+          onChange={(e) => setDisplayName(e.target.value)}
+        />
+        <input
+          type="text"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -56,12 +62,6 @@ const CreateUser = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        {/* <input
-          type="text"
-          placeholder="Name"
-          value={displayName}
-          onChange={(e) => setDisplayName(e.target.value)}
-        /> */}
         <select value={role} onChange={(e) => setRole(e.target.value)}>
           <option value="user">User</option>
           <option value="admin">Admin</option>

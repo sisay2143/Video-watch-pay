@@ -1,23 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { storage } from "../firebase"; // Import Firebase Storage
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import './uploadVideo.css'
-import UserHeader from './userHeader';
+import "./uploadVideo.css";
+import UserHeader from "./userHeader";
 
 const UploadVideo = () => {
   const [video, setVideo] = useState(null);
-  const [videoTitle, setVideoTitle] = useState('');
-  const [videoDescription, setVideoDescription] = useState('');
+  const [videoTitle, setVideoTitle] = useState("");
+  const [videoDescription, setVideoDescription] = useState("");
   const [uploadProgress, setUploadProgress] = useState(0);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showVideoError, setShowVideoError] = useState(false);
   const [showTitleError, setShowTitleError] = useState(false);
   const [isTitleValid, setIsTitleValid] = useState(true);
+  const [videoPreviewUrl, setVideoPreviewUrl] = useState(null);
+  const [dragDropVisible, setDragDropVisible] = useState(true);
 
   const handleVideoChange = (event) => {
     const selectedVideo = event.target.files[0];
     setVideo(selectedVideo);
     setShowVideoError(false);
+    setVideoPreviewUrl(URL.createObjectURL(selectedVideo)); // Create preview URL
+    setDragDropVisible(false); // Hide drag and drop area
   };
 
   const handleVideoTitleChange = (event) => {
@@ -31,7 +35,22 @@ const UploadVideo = () => {
   const handleVideoDescriptionChange = (event) => {
     setVideoDescription(event.target.value);
   };
-  
+
+  const handleDragOver = (event) => {
+    event.preventDefault();
+  };
+
+  const handleDrop = (event) => {
+    event.preventDefault();
+    const droppedFiles = event.dataTransfer.files;
+    if (droppedFiles.length > 0) {
+      setVideo(droppedFiles[0]);
+      setVideoPreviewUrl(URL.createObjectURL(droppedFiles[0]));
+      setShowVideoError(false);
+      setDragDropVisible(false); // Hide drag and drop area
+    }
+  };
+
   const handleUpload = async () => {
     try {
       if (!video) {
@@ -84,13 +103,49 @@ const UploadVideo = () => {
       console.error('Error uploading video:', error.message);
     }
   };
-  
 
   return (
     <>
-      <div className="upload-video-container">
+      <div
+        className="upload-video-container"
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
+      >
         <h2 className="upload-video-title">Upload Video</h2>
-        <input type="file" className="upload-video-input" onChange={handleVideoChange} />
+        {videoPreviewUrl && (
+          <div video-con>
+            <video controls className="video-preview" autoPlay>
+              <source src={videoPreviewUrl} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+            <p>
+              <a
+              className="file-select-link"
+                href="#"
+                onClick={() => {
+                  setVideo(null);
+                  setVideoPreviewUrl(null);
+                  setDragDropVisible(true);
+                }}
+              >
+                clear selected video
+              </a>
+            </p>
+          </div>
+        )}
+        {dragDropVisible && (
+          <div className="drag-drop-area">
+            <p>Drag & Drop your video here or</p>
+            <label className="upload-video-label">
+              Choose File
+              <input
+                type="file"
+                className="upload-video-input-one"
+                onChange={handleVideoChange}
+              />
+            </label>
+          </div>
+        )}
         {showVideoError && (
           <div className="error-message">
             Please select a video before uploading.
@@ -98,17 +153,14 @@ const UploadVideo = () => {
         )}
         <input
           type="text"
-          className="upload-video-input"
+          className="upload-video-input-title"
           placeholder="Video Title"
           value={videoTitle}
           onChange={handleVideoTitleChange}
         />
         {showTitleError && (
-          <div className="error-message">
-            Please enter a video title.
-          </div>
+          <div className="error-message">Please enter a video title.</div>
         )}
-        {/* <br /> */}
         <textarea
           className="upload-video-input"
           placeholder="Video Description"
@@ -119,13 +171,13 @@ const UploadVideo = () => {
           Upload Video
         </button>
         {showSuccessMessage && (
-          <div className="success-message">
-            Video uploaded successfully!
-          </div>
+          <div className="success-message">Video uploaded successfully!</div>
         )}
         {uploadProgress > 0 && uploadProgress < 100 && (
           <div className="upload-progress">
-            <progress value={uploadProgress} max="100">{uploadProgress}%</progress>
+            <progress value={uploadProgress} max="100">
+              {uploadProgress}%
+            </progress>
           </div>
         )}
       </div>

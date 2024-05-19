@@ -1,21 +1,4 @@
-// // App.js
-// import React from 'react';
-// import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-// import HomePage from './components/main';
-// import LoginPage from './LoginPage';
 
-// const App = () => {
-//   return (
-//     <Router>
-//       <Routes>
-//         <Route path="/" element={<HomePage />} />
-//         <Route path="/login" element={<LoginPage />} />
-//       </Routes>
-//     </Router>
-//   );
-// };
-
-// export default App;
 
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';

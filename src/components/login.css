@@ -10,7 +10,7 @@
   .login-content {
     margin-top: 30px;
     width: 580px;
-    height: 480px;
+    height: 500px;
     padding: 49px;
     background-color: #fff;
     border-radius: 8px;
@@ -40,13 +40,7 @@
     padding: 12px 16px;
     font-size: 16px;
   }
-  .login-form button{
-    width: 100%;
-    padding: 12px 16px;
-    font-size: 16px;
-    border-radius: 70px;
-
-  }
+ 
   .login-form input {
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -56,16 +50,20 @@
     background-color: #007bff;
     color: #fff;
     border: none;
-    border-radius: 29px;
+    border-radius: 12px;
     cursor: pointer;
     transition: background-color 0.3s;
+    padding: 12px 16px;
+    font-size: 16px;
+    /* border-radius: 20px; */
+
   }
   
   .login-form button:hover {
     background-color: #0056b3;
   }
   
-  .login-content button {
+  .login-content login {
     display: block;
     width: 100%;
     margin: 0 auto;
@@ -85,16 +83,48 @@
 
   .forgot-password {
     text-align: left;
-    margin-top: 5px;
+    margin-top: -10px;
     font-size: 16px;
+    margin-bottom: -20px;
   }
   
   .forgot-password a {
     color: #007bff;
     text-decoration: none;
     transition: color 0.3s;
+    text-decoration: underline;
+    /* font-weight: bold; */
   }
   
   .forgot-password a:hover {
     color: #0056b3;
   }
+ 
+  
+  .error-message {
+    color: #ff0000; /* Set the text color for error messages */
+    font-weight: bold; /* Make the error message bold */
+    margin-top: -20px; /* Add some spacing between the input fields and the error message */
+
+  }
+  
+  .login-form input.error {
+    border-color: #ebe5e5; /* Set the border color of the input field to red if there's an error */
+  }
+
+  .payment {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #547b56; /* Green color for the payment button */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 8px;
+  }
+  
+  

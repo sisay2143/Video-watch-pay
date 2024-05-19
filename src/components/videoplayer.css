@@ -15,23 +15,37 @@
   max-width: 1200px; /* Increase the maximum width */
   
 }
-.video-player-wrapper p {
+.video-player-wrapper h2 {
   position: absolute; /* Position the title */
   bottom: 12; /* Align to the bottom */
-  left: 16; /* Align to the left */
-  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
-  color: #fff; /* Text color */
-  padding: 8px 16px; /* Padding */
-  margin: 0; /* Remove default margin */
+  left: 14; /* Align to the left */
+ 
+  color: #0b0a0a; /* Text color */
+  /* padding: 8px 16px; Padding */
   border-radius: 10px;
   font-size: 20px;
   font-weight: bold;
+  margin-bottom: 20px;
+  padding-bottom: -5px;
+  padding: 4px ; 
+
+}
+.video-player-wrapper p {
+  position: absolute; /* Position the title */
+  bottom: 14; /* Align to the bottom */
+  left: 16; /* Align to the left */
+  
+  color: #0b0606; /* Text color */
+  padding: 4px ; 
+  margin-top: 20px;
+  font-size: 15px;
+  font-weight: lighter;
 }
 
 .video-player-wrapper video {
   width: 100%;
   max-width: 1200px;
-  height: 600px; /* Change height to auto to maintain aspect ratio */
+  height: 550px; /* Change height to auto to maintain aspect ratio */
   border-radius: 8px; /* Adjust the border-radius value to control the roundness */
   object-fit: cover; /* Maintain aspect ratio and fill the container */
 }

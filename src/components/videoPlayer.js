@@ -21,6 +21,7 @@ const VideoPlayer = () => {
   const [allVideos, setAllVideos] = useState([]);
   const [filteredVideos, setFilteredVideos] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [videoDescription, setVideoDescription] = useState("");
 
   useEffect(() => {
     const fetchVideoUrl = async () => {
@@ -35,6 +36,7 @@ const VideoPlayer = () => {
             return {
               name: item.name,
               title: metadata.customMetadata.title || item.name,
+              description: metadata.customMetadata.description || "",
               url: await getDownloadURL(item),
             };
           })
@@ -49,6 +51,7 @@ const VideoPlayer = () => {
         if (matchingVideo) {
           setVideoUrl(matchingVideo.url);
           setVideoTitle(matchingVideo.title);
+          setVideoDescription(matchingVideo.description);
           setVideoRef(videoRef);
         } else {
           console.error(`Video with name "${videoName}" not found in storage.`);
@@ -98,7 +101,6 @@ const VideoPlayer = () => {
     searchInput.disabled = false;
     searchInput.focus();
     setSearchQuery('');
-
     // Perform the search
     handleSearch();
   };
@@ -117,7 +119,8 @@ const VideoPlayer = () => {
               >
                 Your browser does not support the video tag.
               </video>
-              {videoTitle && <p>{videoTitle}</p>}
+              {videoTitle && <h2>{videoTitle}</h2>}
+              {videoDescription && <p>{videoDescription}</p>}
             </>
           ) : (
             <div>Loading...</div>

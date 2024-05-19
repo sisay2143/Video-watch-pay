@@ -7,7 +7,9 @@ import { getMetadata } from "firebase/storage";
 
 const Home = () => {
   const [videoData, setVideoData] = useState([]);
+  const [filteredVideos, setFilteredVideos] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,7 +18,7 @@ const Home = () => {
         const storage = getStorage();
         const storageRef = ref(storage, "videos");
         const videosSnapshot = await listAll(storageRef);
-
+  
         const videoData = await Promise.all(
           videosSnapshot.items.map(async (item) => {
             const metadata = await getMetadata(item);
@@ -27,10 +29,14 @@ const Home = () => {
               description: metadata.customMetadata.description || "",
               url: videoUrl,
               thumbnailUrl: `${videoUrl}_thumbnail.jpg`, // Add thumbnail URL
+              timestamp: metadata.timeCreated, // Add timestamp
             };
           })
         );
-
+  
+        // Sort videos based on timestamp in descending order
+        videoData.sort((a, b) => b.timestamp - a.timestamp);
+        
         setVideoData(videoData);
         setCurrentUser(user);
       } catch (error) {
@@ -39,12 +45,21 @@ const Home = () => {
     });
     return unsubscribe;
   }, []);
+  
+
+  useEffect(() => {
+    // Filter videos based on search query
+    const filtered = videoData.filter((video) => {
+      const title = video.title || ''; // Ensure title is defined
+      return title.toLowerCase().includes(searchQuery.toLowerCase());
+    });
+    setFilteredVideos(filtered);
+  }, [videoData, searchQuery]);
 
   const handleVideoClick = (videoId) => {
     if (!currentUser) {
       navigate("/login");
     } else {
-      
       navigate(`/video/${videoId}`);
     }
   };
@@ -52,7 +67,7 @@ const Home = () => {
   return (
     <div className="home-container">
       <div className="video-thumbnails-container">
-        {videoData.map((video, index) => (
+        {filteredVideos.map((video, index) => (
           <div
             key={index}
             className="video-thumbnail"
@@ -74,6 +89,8 @@ const Home = () => {
 };
 
 export default Home;
+
+
 
 
 
