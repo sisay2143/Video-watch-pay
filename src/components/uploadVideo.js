@@ -10,32 +10,47 @@ const UploadVideo = () => {
   const [videoDescription, setVideoDescription] = useState('');
   const [uploadProgress, setUploadProgress] = useState(0);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [showVideoError, setShowVideoError] = useState(false);
+  const [showTitleError, setShowTitleError] = useState(false);
+  const [isTitleValid, setIsTitleValid] = useState(true);
 
   const handleVideoChange = (event) => {
     const selectedVideo = event.target.files[0];
     setVideo(selectedVideo);
-    setShowErrorMessage(false);
+    setShowVideoError(false);
   };
 
   const handleVideoTitleChange = (event) => {
-    setVideoTitle(event.target.value);
+    const title = event.target.value;
+    setVideoTitle(title);
+    const isTitleValid = title.trim().length > 0;
+    setIsTitleValid(isTitleValid);
+    setShowTitleError(!isTitleValid);
   };
 
   const handleVideoDescriptionChange = (event) => {
     setVideoDescription(event.target.value);
   };
-
+  
   const handleUpload = async () => {
     try {
       if (!video) {
-        setShowErrorMessage(true);
+        setShowVideoError(true);
         return;
       }
-
+      if (videoTitle.trim().length === 0) {
+        setIsTitleValid(false);
+        setShowTitleError(true);
+        return;
+      }
       const storageRef = ref(storage, `/videos/${video.name}`);
-      const uploadTask = uploadBytesResumable(storageRef, video);
-
+      const uploadTask = uploadBytesResumable(storageRef, video, {
+        customMetadata: {
+          title: videoTitle,
+          description: videoDescription,
+        },
+      });
+  
       uploadTask.on(
         "state_changed",
         (snapshot) => {
@@ -56,6 +71,9 @@ const UploadVideo = () => {
               setVideoTitle('');
               setVideoDescription('');
               setShowSuccessMessage(true);
+              setTimeout(() => {
+                setShowSuccessMessage(false);
+              }, 4000);
             })
             .catch((error) => {
               console.log(error);
@@ -66,13 +84,18 @@ const UploadVideo = () => {
       console.error('Error uploading video:', error.message);
     }
   };
+  
 
   return (
     <>
-      
       <div className="upload-video-container">
         <h2 className="upload-video-title">Upload Video</h2>
         <input type="file" className="upload-video-input" onChange={handleVideoChange} />
+        {showVideoError && (
+          <div className="error-message">
+            Please select a video before uploading.
+          </div>
+        )}
         <input
           type="text"
           className="upload-video-input"
@@ -80,6 +103,12 @@ const UploadVideo = () => {
           value={videoTitle}
           onChange={handleVideoTitleChange}
         />
+        {showTitleError && (
+          <div className="error-message">
+            Please enter a video title.
+          </div>
+        )}
+        {/* <br /> */}
         <textarea
           className="upload-video-input"
           placeholder="Video Description"
@@ -92,11 +121,6 @@ const UploadVideo = () => {
         {showSuccessMessage && (
           <div className="success-message">
             Video uploaded successfully!
-          </div>
-        )}
-        {showErrorMessage && (
-          <div className="error-message">
-            Please select a video before uploading.
           </div>
         )}
         {uploadProgress > 0 && uploadProgress < 100 && (

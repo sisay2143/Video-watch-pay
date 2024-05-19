@@ -1,50 +1,57 @@
 /* Styles for Create User component */
 
 .createUserContainer {
-    max-width: 400px;
-    margin: 0 auto;
-    border: 1px solid #ccc; /* Add border */
-    border-radius: 5px; /* Add border radius for rounded corners */
-    padding: 20px; /* Add padding for spacing */
-  }
-  
-  .createUserContainer h2 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .createUserContainer input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-  }
-  
-  .createUserContainer button {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .createUserContainer button:hover {
-    background-color: #0056b3;
-  }
-  
-  .createUserContainer p {
-    color: red;
-  }
-  
+  max-width: 500px; /* Increased container width */
+  margin: 0 auto;
+  margin-top: 20px;
+  border: 1px solid #ccc; /* Add border */
+  border-radius: 5px; /* Add border radius for rounded corners */
+  padding: 30px; /* Increased padding */
+}
 
-  .createUserContainer select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-  }
-  
-  .createUserContainer option {
-    padding: 10px;
-  }
-  
+.createUserContainer h2 {
+  text-align: center;
+  margin-bottom: 25px; /* Increased margin-bottom */
+  font-size: 24px; /* Increased font size */
+}
+
+.createUserContainer input {
+  width: 100%;
+  padding: 12px; /* Increased padding */
+  margin-bottom: 12px; /* Increased margin-bottom */
+  font-size: 16px; /* Increased font size */
+}
+
+.createUserContainer button {
+  width: 100%;
+  padding: 12px; /* Increased padding */
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 25px; /* Increased margin-top */
+  font-size: 16px; /* Increased font size */
+}
+
+.createUserContainer button:hover {
+  background-color: #0056b3;
+}
+
+.createUserContainer p {
+  color: red;
+  font-size: 16px; /* Increased font size */
+}
+
+
+.createUserContainer select {
+  width: 100%;
+  padding: 12px; /* Increased padding */
+  margin-bottom: 12px; /* Increased margin-bottom */
+  font-size: 16px; /* Increased font size */
+}
+
+.createUserContainer option {
+  padding: 12px; /* Increased padding */
+  font-size: 16px; /* Increased font size */
+}

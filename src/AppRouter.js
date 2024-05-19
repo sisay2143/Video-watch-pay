@@ -9,6 +9,7 @@ import UploadVideo from "./components/uploadVideo";
 import UserHeader from "./components/userHeader";
 import ForgotPassword from "./components/forgotPassword";
 import UploadPage from "./components/createuser";
+import Footer from "./components/footer";
 // import HomePage from "./components/Home";
 
 const AppRouter = ({ currentUser, handleLogout, setNavigate, handleLogin }) => {
@@ -19,12 +20,15 @@ const AppRouter = ({ currentUser, handleLogout, setNavigate, handleLogin }) => {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<AboutMe />} />
         <Route path="/login" element={currentUser ? <Navigate to="/" /> : <LoginPage setNavigate={setNavigate} />} />
+        {/* <Route path="/video/:videoId" element={<VideoPlayer />} /> */}
         <Route path="/video/:videoName" element={<VideoPlayer />} />
-        {/* <Route path="/https://www.youtube.com/upload" /> */}
+          {/* <Route path="/https://www.youtube.com/upload" /> */}
         <Route path="/create-user" element={<CreateUser />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/upload" element={<uploadVideo />} />
       </Routes>
+      <Footer/>
     </div>
   );
 };

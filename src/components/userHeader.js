@@ -3,9 +3,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { getFirestore, getDoc, doc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import './userheader.css';
+import { FaSearch } from 'react-icons/fa'; // Import the search icon
 
 const UserHeader = ({ isLoggedIn, handleLogout }) => {
   const [userRole, setUserRole] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchActive, setSearchActive] = useState(false);
   const navigate = useNavigate();
   const auth = getAuth();
   const firestore = getFirestore();
@@ -43,6 +46,31 @@ const UserHeader = ({ isLoggedIn, handleLogout }) => {
     navigate('/');
   };
 
+  // const handleSearch = () => {
+  //   const matchingVideos = allVideos.filter((video) => {
+  //     const title = video.title.toLowerCase();
+  //     const query = searchQuery.toLowerCase();
+  //     return (
+  //       title.startsWith(query) ||
+  //       title.endsWith(query) ||
+  //       title.includes(query)
+  //     );
+  //   });
+
+  //   setFilteredVideos(matchingVideos);
+  // };
+
+  const handleSearchIconClick = () => {
+    // Enable the search input field
+    const searchInput = document.querySelector(".search-bar input");
+    searchInput.disabled = false;
+    searchInput.focus();
+    setSearchQuery('');
+
+    // Perform the search
+    // handleSearch();
+  };
+
   return (
     <div className="user-header">
       <nav>
@@ -51,15 +79,27 @@ const UserHeader = ({ isLoggedIn, handleLogout }) => {
             <Link to="/" className="home-link">Home</Link>
           </li>
           <li>
-            <div className="search-container">
-              <input type="text" placeholder="Search" className="search-input" />
-              <i className="fas fa-search search-icon"></i>
-            </div>
+          <div className="search-bar">
+            <input
+              type="text"
+              placeholder="Search by title"
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                // handleSearch();
+              }}
+              disabled={false}
+            />
+            <FaSearch
+              className="search-icon"
+              onClick={handleSearchIconClick}
+            />
+          </div>
           </li>
           {userRole === 'admin' && (
             <>
               <li>
-                <Link to="/upload" className="upload-link right-side" onClick={handleUploadClick}>Upload Video</Link>
+                <Link to="/upload" className="upload-link right-side" >Upload Video</Link>
               </li>
               <li>
                 <Link to="/create-user" className="create-user-link right-side">Create User</Link>
@@ -67,7 +107,7 @@ const UserHeader = ({ isLoggedIn, handleLogout }) => {
             </>
           )}
           <li>
-            <Link to="/about" className="about-link right-side">About</Link>
+            <Link to="/about" className="about-link right-side">About us</Link>
           </li>
           <li>
             {isLoggedIn ? (

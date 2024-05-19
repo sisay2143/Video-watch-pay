@@ -1,79 +1,151 @@
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { auth, getStorage, storage, ref, listAll, getDownloadURL } from "../firebase";
+import "./home.css";
+import UserHeader from "./userHeader";
+import { getMetadata } from "firebase/storage";
+
+const Home = () => {
+  const [videoData, setVideoData] = useState([]);
+  const [currentUser, setCurrentUser] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+      try {
+        const storage = getStorage();
+        const storageRef = ref(storage, "videos");
+        const videosSnapshot = await listAll(storageRef);
+
+        const videoData = await Promise.all(
+          videosSnapshot.items.map(async (item) => {
+            const metadata = await getMetadata(item);
+            const videoUrl = await getDownloadURL(item);
+            return {
+              id: item.name.split(".")[0],
+              title: metadata.customMetadata.title || "Untitled",
+              description: metadata.customMetadata.description || "",
+              url: videoUrl,
+              thumbnailUrl: `${videoUrl}_thumbnail.jpg`, // Add thumbnail URL
+            };
+          })
+        );
+
+        setVideoData(videoData);
+        setCurrentUser(user);
+      } catch (error) {
+        console.error("Error fetching videos:", error.message);
+      }
+    });
+    return unsubscribe;
+  }, []);
+
+  const handleVideoClick = (videoId) => {
+    if (!currentUser) {
+      navigate("/login");
+    } else {
+      
+      navigate(`/video/${videoId}`);
+    }
+  };
+
+  return (
+    <div className="home-container">
+      <div className="video-thumbnails-container">
+        {videoData.map((video, index) => (
+          <div
+            key={index}
+            className="video-thumbnail"
+            onClick={() => handleVideoClick(video.id)}
+          >
+            <div className="play-icon"></div>
+            <Link to={`/video/${video.id}`}>
+              <video src={video.url} alt={`Video ${index + 1}`} />
+            </Link>
+            <div className="video-info">
+              <h3>{video.title}</h3>
+              <p>{video.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default Home;
+
+
+
+
+
+
 // import React, { useState, useEffect } from "react";
-// import { Link, useNavigate } from "react-router-dom";
-// import { auth, getStorage, storage, ref, listAll } from "../firebase";
-// import VideoUploader from "./uploadVideo";
+// import { useNavigate } from "react-router-dom";
 // import "./home.css";
-// import UserHeader from "./userHeader";
 // import Footer from "./footer";
+// import { auth } from "../firebase";
+// import axios from "axios";
 
 // const Home = () => {
-//   const [videoIds, setVideoIds] = useState([]);
-//   const [activeVideoId, setActiveVideoId] = useState(null);
 //   const [currentUser, setCurrentUser] = useState(null);
 //   const navigate = useNavigate();
+//   const [activeVideoId, setActiveVideoId] = useState(null);
+//   const [unlistedVideos, setUnlistedVideos] = useState([]);
+
+//   // Replace this with your own YouTube API key
+//   const apiKey = "AIzaSyB2tADfpscGkBq5ZM6ZJ_3wWY2iDtHFUQ8";
+
+//   // Replace this with your own YouTube channel ID
+//   const yourChannelId = "UClX43ZTbqUXldnrGX6VYLhA";
 
 //   useEffect(() => {
-//     const unsubscribe = auth.onAuthStateChanged(async (user) => {
-//       try {
-//         // Fetch the video IDs from Firebase Storage
-//         const storage = getStorage();
-//         const storageRef = ref(storage, "videos");
-//         const videosSnapshot = await listAll(storageRef);
-//         const videoIds = videosSnapshot.items.map(
-//           (item) => item.name.split(".")[0]
-//         );
-//         setVideoIds(videoIds);
-//         setCurrentUser(user);
-//       } catch (error) {
-//         console.error("Error fetching videos:", error.message);
-//       }
+//     const unsubscribe = auth.onAuthStateChanged((user) => {
+//       setCurrentUser(user);
 //     });
+
 //     return unsubscribe;
 //   }, []);
 
-//   const sampleVideoData = [
-//     {
-//       id: "sample1",
-//       title: "Sample Video 1",
-//       description: "This is a sample video description.",
-//     },
-//     {
-//       id: "sample2",
-//       title: "Sample Video 2",
-//       description: "This is another sample video description.",
-//     },
-//     {
-//       id: "sample3",
-//       title: "Sample Video 3",
-//       description: "This is another sample video description.",
-//     },
-//     {
-//       id: "sample4",
-//       title: "Sample Video 4",
-//       description: "This is another sample video description.",
-//     },
-//     {
-//       id: "sample5",
-//       title: "Sample Video 5",
-//       description: "This is another sample video description.",
-//     },
-//     {
-//       id: "sample6",
-//       title: "Sample Video 6",
-//       description: "This is another sample video description.",
-//     },
-//     // Add more sample video data as needed
-//   ];
+//   useEffect(() => {
+//     const fetchUnlistedVideos = async () => {
+//       try {
+//         const response = await axios.get(
+//           "https://www.googleapis.com/youtube/v3/search",
+//           {
+//             params: {
+//               key: apiKey,
+//               part: "snippet",
+//               channelId: yourChannelId,
+//               maxResults: 50, // Adjust the number of videos to fetch as needed
+//               type: "video",
+//               videoStatus: "public",
+//             },
+//           }
+//         );
+//         console.log(response);
+//         setUnlistedVideos(response.data.items);
+//       } catch (error) {
+//         console.error(
+//           "Error fetching unlisted videos:",
+//           error.response.data.error
+//         );
+//       }
+//     };
+
+//     fetchUnlistedVideos();
+//   }, [apiKey, yourChannelId]);
 
 //   const handleVideoClick = (videoId) => {
-//     // Check if the user is logged in
+//     console.log("Clicked video ID:", videoId);
+//     console.log("Current user:", currentUser);
+
 //     if (!currentUser) {
-//       // If the user is not logged in, redirect them to the login page
+//       console.log("Redirecting to login page...");
 //       navigate("/login");
 //     } else {
-//       // If the user is logged in, set the active video ID
+//       console.log("Navigating to video details page...");
 //       setActiveVideoId(videoId);
-//       // Navigate to the video player page
 //       navigate(`/video/${videoId}`);
 //     }
 //   };
@@ -82,154 +154,32 @@
 //     <>
 //       <div className="home-container">
 //         <div className="video-thumbnails-container">
-//           {videoIds.map((videoId, index) => (
+//           {unlistedVideos.map((video, index) => (
 //             <div
 //               key={index}
-//               className="video-thumbnail"
-//               onClick={() => handleVideoClick(videoId)}
+//               className={`video-thumbnail ${
+//                 activeVideoId === video.id.videoId ? "active" : ""
+//               }`}
+//               onClick={() => handleVideoClick(video.id.videoId)}
 //             >
-//               <div className="play-icon"></div>
-//               <Link to={`/video/${videoId}`}>
-//                 <video
-//                   controls
-//                   src={`https://firebasestorage.googleapis.com/v0/b/${storage.bucket}/o/videos%2F${videoId}.mp4?alt=media`}
-//                   alt={`Video ${index + 1}`}
-//                   poster={`https://firebasestorage.googleapis.com/v0/b/${storage.bucket}/o/videos%2F${videoId}_thumbnail.jpg?alt=media`}
-//                 />
-//               </Link>
+//               <img className="video-thumbnail-img"
+//                 src={video.snippet.thumbnails.default.url}
+//                 alt={`Video ${index + 1}`}
+//                 onError={(e) => {
+//                   e.target.onerror = null;
+//                   e.target.src = "placeholder.jpg";
+//                 }}
+//               />
 //               <div className="video-info">
-//                 <h3>{sampleVideoData[index].title}</h3>
-//                 <p>{sampleVideoData[index].description}</p>
+//                 <h3 className="video-title">{video.snippet.title}</h3>
+//                 <p className="video-description">{video.snippet.description}</p>
 //               </div>
 //             </div>
 //           ))}
 //         </div>
-//       </div>
-//       <div>
-//         <Footer />
 //       </div>
 //     </>
 //   );
 // };
 
 // export default Home;
-
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { google } from "googleapis";
-import VideoUploader from "./uploadVideo";
-import "./home.css";
-import UserHeader from "./userHeader";
-import Footer from "./footer";
-
-const Home = () => {
-  const [videoIds, setVideoIds] = useState([]);
-  const [activeVideoId, setActiveVideoId] = useState(null);
-  const [currentUser, setCurrentUser] = useState(null);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchVideos = async () => {
-      try {
-        // Set up the YouTube API client
-        const youtube = google.youtube({ version: "v3", auth: "AIzaSyB2tADfpscGkBq5ZM6ZJ_3wWY2iDtHFUQ8" });
-
-        // Fetch the user's private videos
-        const response = await youtube.videos.list({
-          part: "id",
-          mine: true,
-          maxResults: 2, // Adjust the number of videos to fetch
-        });
-
-        // Extract the video IDs
-        const videoIds = response.data.items.map((item) => item.id);
-        setVideoIds(videoIds);
-
-        // Check if the user is logged in
-        const currentUser = await getUserInfo();
-        setCurrentUser(currentUser);
-      } catch (error) {
-        console.error("Error fetching videos:", error.message);
-      }
-    };
-
-    fetchVideos();
-  }, []);
-
-  const getUserInfo = async () => {
-    try {
-      // Set up the YouTube API client
-      const youtube = google.youtube({ version: "v3", auth: "YOUR_API_KEY_HERE" });
-
-      // Fetch the user's profile information
-      const response = await youtube.users.get({
-        part: "snippet",
-      });
-
-      return response.data.items[0];
-    } catch (error) {
-      console.error("Error fetching user info:", error.message);
-      return null;
-    }
-  };
-
-  const sampleVideoData = [
-    {
-      id: "sample1",
-      title: "Sample Video 1",
-      description: "This is a sample video description.",
-    },
-    {
-      id: "sample2",
-      title: "Sample Video 2",
-      description: "This is another sample video description.",
-    },
-    // Add more sample video data as needed
-  ];
-
-  const handleVideoClick = (videoId) => {
-    // Check if the user is logged in
-    if (!currentUser) {
-      // If the user is not logged in, redirect them to the login page
-      navigate("/login");
-    } else {
-      // If the user is logged in, set the active video ID
-      setActiveVideoId(videoId);
-      // Navigate to the YouTube video player page
-      navigate(`https://www.youtube.com/watch?v=${videoId}`);
-    }
-  };
-
-  return (
-    <>
-      <div className="home-container">
-        <div className="video-thumbnails-container">
-          {videoIds.map((videoId, index) => (
-            <div
-              key={index}
-              className="video-thumbnail"
-              onClick={() => handleVideoClick(videoId)}
-            >
-              <div className="play-icon"></div>
-              <Link to={`https://www.youtube.com/watch?v=${videoId}`}>
-                <img
-                  src={`https://img.youtube.com/vi/${videoId}/0.jpg`}
-                  alt={`Video ${index + 1}`}
-                />
-              </Link>
-              <div className="video-info">
-                <h3>{sampleVideoData[index].title}</h3>
-                <p>{sampleVideoData[index].description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div>
-        <Footer />
-      </div>
-    </>
-  );
-};
-
-export default Home;

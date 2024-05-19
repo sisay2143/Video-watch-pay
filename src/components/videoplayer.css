@@ -1,43 +1,114 @@
 .video-player-container {
-    display: flex;
-    flex-direction: row;
-    /* justify-content: space-between; */
-    width: 100%;
-    padding-left: 40px; /* Add padding from the left */
-  }
+  display: flex;
+  flex-direction: row;
+  /* justify-content: space-between; */
+  width: 100%;
+  padding-left: 40px; /* Add padding from the left */
+  padding-top: 10px;
+  padding-right: -20px;
+  border-color: black;
+}
+
+.video-player-wrapper {
+  flex-grow: 1;
+  margin-right: 20px;
+  max-width: 1200px; /* Increase the maximum width */
   
-  .video-player-wrapper {
-    flex-grow: 1;
-    margin-right: 20px;
-    max-width: 1200px; /* Increase the maximum width */
-  }
-  
-  .video-player-wrapper video {
-    width: 100%;
-    max-width: 1200px; /* Increase the maximum width */
-    height: 650px; /* Maintain the aspect ratio */
-  }
-  
-  .sidebar {
-    width: 390px;
-    background-color: #f1f1f1;
-    padding: 20px;
-    overflow-y: auto;
-  }
-  
-  .video-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .video-thumbnail {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .video-thumbnail img {
-    width: 100px;
-    height: 60px;
-  }
+}
+.video-player-wrapper p {
+  position: absolute; /* Position the title */
+  bottom: 12; /* Align to the bottom */
+  left: 16; /* Align to the left */
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+  color: #fff; /* Text color */
+  padding: 8px 16px; /* Padding */
+  margin: 0; /* Remove default margin */
+  border-radius: 10px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.video-player-wrapper video {
+  width: 100%;
+  max-width: 1200px;
+  height: 600px; /* Change height to auto to maintain aspect ratio */
+  border-radius: 8px; /* Adjust the border-radius value to control the roundness */
+  object-fit: cover; /* Maintain aspect ratio and fill the container */
+}
+.sidebar {
+  width: 444px;
+  background-color: #f1f1f1;
+  padding: 10px;
+  margin-left: 20px;
+  margin-right: auto;
+  overflow-y: auto;
+  border-radius: 10px;
+}
+
+.video-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+}
+
+.video-thumbnail {
+  display: flex;
+  align-items: center;
+  gap: 0px;
+}
+
+.video-thumbnail-img {
+  width: 390px;
+  height: 180px;
+  border-radius: 10px;
+}
+
+.sidebar .video-thumbnail p {
+  margin-top: 5px; /* Add some space between the video and its title */
+  margin-bottom: 0; /* Remove default bottom margin */
+  text-align: left; /* Align the text to the left */
+}
+
+
+.search-bar {
+  margin-bottom: 10px; /* Add margin below the search bar */
+}
+
+.search-bar input[type="text"] {
+  width: calc(100% - 30px); /* Set input width to 100% minus space for icon */
+  padding: 10px; /* Add padding */
+  border: 1px solid #ccc; /* Add border */
+  border-radius: 5px; /* Add border radius */
+}
+
+/* Style the search icon */
+.search-icon {
+  position: relative;
+  top: 3px; /* Adjust vertical position */
+  right: 25px; /* Adjust horizontal position */
+  color: #999;
+  transition: color 0.3s ease;
+}
+
+/* Change icon color on hover */
+.search-icon:hover {
+  color: #555;
+}
+
+/* Style the sidebar */
+.sidebar {
+  width: 444px;
+  background-color: #f1f1f1;
+  padding: 10px;
+  margin-left: 20px;
+  margin-right: auto;
+  overflow-y: auto;
+  border-radius: 10px;
+}
+
+/* Adjust the video thumbnail */
+.video-thumbnail {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Add gap between thumbnail and title */
+}
